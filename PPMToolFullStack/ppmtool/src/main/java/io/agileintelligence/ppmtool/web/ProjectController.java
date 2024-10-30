@@ -52,4 +52,13 @@ public class ProjectController {
 
         return new ResponseEntity<String>("Project with ID: " + projectId + " was deleted", HttpStatus.OK);
     }
+
+//    update request: out-of-box feature is to use SAME create request (type & body), but with passing system ID
+//    Example (POST http://localhost:8080/api/project) , body params:
+//    {
+//    "id": 2,
+//	"projectName": "Test",
+//    "projectIdentifier": "IDTE1",
+//    "description": "azaza"
+//}
 }
