@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProject } from "../../actions/projectActions";
 import { useNavigate } from "react-router-dom";
+import withNavigate from "../withNavigate";
 
 class AddProject extends Component {
   constructor() {
@@ -117,15 +118,4 @@ AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
-
-// Wrapping the main class with this functional component
-function AddProjectFunc(props) {
-  let navigate = useNavigate();
-  return <AddProject {...props} navigate={navigate} />;
-}
-
-export default connect(null, { createProject })(
-  connect(mapStateToProps, mapDispatchToProps)(AddProjectFunc)
-);
+export default connect(null, { createProject })(withNavigate(AddProject));
