@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createProject } from "../../actions/projectActions";
-import { useNavigate } from "react-router-dom";
 import withNavigate from "../withNavigate";
+import classNames from "classnames";
 
 class AddProject extends Component {
   constructor() {
@@ -60,36 +60,54 @@ class AddProject extends Component {
                   <div className="form-group">
                     <input
                       type="text"
-                      className="form-control form-control-lg "
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": this.props.errors.projectName,
+                      })}
                       placeholder="Project Name"
                       // name attr must match the field name of the server entity
                       name="projectName"
                       value={this.state.projectName}
                       onChange={this.onChange}
                     />
-                    <p>{this.props.errors.projectName}</p>
+                    {this.props.errors.projectName && (
+                      <div className="invalid-feedback">
+                        {this.props.errors.projectName}
+                      </div>
+                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="text"
-                      className="form-control form-control-lg"
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": this.props.errors.projectIdentifier,
+                      })}
                       placeholder="Unique Project ID"
                       name="projectIdentifier"
                       value={this.state.projectIdentifier}
                       onChange={this.onChange}
                     />
-                    <p>{this.props.errors.projectIdentifier}</p>
+                    {this.props.errors.projectIdentifier && (
+                      <div className="invalid-feedback">
+                        {this.props.errors.projectIdentifier}
+                      </div>
+                    )}
                   </div>
 
                   <div className="form-group">
                     <textarea
-                      className="form-control form-control-lg"
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": this.props.errors.description,
+                      })}
                       placeholder="Project Description"
                       name="description"
                       value={this.state.description}
                       onChange={this.onChange}
                     ></textarea>
-                    <p>{this.props.errors.description}</p>
+                    {this.props.errors.description && (
+                      <div className="invalid-feedback">
+                        {this.props.errors.description}
+                      </div>
+                    )}
                   </div>
                   <h6>Start Date</h6>
                   <div className="form-group">
