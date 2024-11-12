@@ -7,6 +7,7 @@ import AddProject from "./components/Project/AddProject";
 // connect react with redux
 import { Provider } from "react-redux";
 import store from "./store";
+import UpdateProject from "./components/Project/UpdateProject";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route exact path="/dashboard" Component={Dashboard} />
             <Route exact path="/addProject" Component={AddProject} />
+            <Route exact path="/updateProject/:id" Component={UpdateProject} />
           </Routes>
         </div>
       </Router>
