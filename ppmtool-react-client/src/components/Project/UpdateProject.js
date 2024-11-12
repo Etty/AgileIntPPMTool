@@ -1,54 +1,67 @@
 import React, { Component } from "react";
+import { getProject } from "../../actions/projectActions";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import classNames from "classnames";
+import withRouter from "../withRouter";
 
-export default class UpdateProject extends Component {
+class UpdateProject extends Component {
+  componentDidMount() {
+    // id from route parameter we pass in App.js
+    const { id } = this.props.router.params;
+    this.props.getProject(id, this.props.router.navigate);
+  }
   render() {
     return (
-      <div class="register">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-8 m-auto">
-              <h5 class="display-4 text-center">Update Project form</h5>
+      <div className="register">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 m-auto">
+              <h5 className="display-4 text-center">Update Project form</h5>
               <hr />
               <form>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control form-control-lg "
+                    className="form-control form-control-lg "
                     placeholder="Project Name"
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="text"
-                    class="form-control form-control-lg"
+                    className="form-control form-control-lg"
                     placeholder="Unique Project ID"
                     disabled
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <textarea
-                    class="form-control form-control-lg"
+                    className="form-control form-control-lg"
                     placeholder="Project Description"
                   ></textarea>
                 </div>
                 <h6>Start Date</h6>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="date"
-                    class="form-control form-control-lg"
+                    className="form-control form-control-lg"
                     name="start_date"
                   />
                 </div>
                 <h6>Estimated End Date</h6>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="date"
-                    class="form-control form-control-lg"
+                    className="form-control form-control-lg"
                     name="end_date"
                   />
                 </div>
 
-                <input type="submit" class="btn btn-primary btn-block mt-4" />
+                <input
+                  type="submit"
+                  className="btn btn-primary btn-block mt-4"
+                />
               </form>
             </div>
           </div>
@@ -57,3 +70,17 @@ export default class UpdateProject extends Component {
     );
   }
 }
+
+UpdateProject.propTypes = {
+  getProject: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  // from reducer
+  project: state.project.project,
+});
+
+export default connect(mapStateToProps, { getProject })(
+  withRouter(UpdateProject)
+);

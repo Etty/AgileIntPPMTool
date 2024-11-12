@@ -1,6 +1,6 @@
 // axios - library for connection with backend
 import axios from "axios";
-import { GET_ERRORS, GET_PROJECTS } from "./types";
+import { GET_ERRORS, GET_PROJECT, GET_PROJECTS } from "./types";
 
 // async - return a Promise
 export const createProject = (project, navigate) => async (dispatch) => {
@@ -21,6 +21,14 @@ export const getProjects = () => async (dispatch) => {
   const res = await axios.get("http://localhost:8080/api/project/all");
   dispatch({
     type: GET_PROJECTS,
+    payload: res.data,
+  });
+};
+
+export const getProject = (id, history) => async (dispatch) => {
+  const res = await axios.get(`http://localhost:8080/api/project/${id}`);
+  dispatch({
+    type: GET_PROJECT,
     payload: res.data,
   });
 };
