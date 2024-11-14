@@ -15,6 +15,7 @@ class UpdateProject extends Component {
       description: "",
       start_date: "",
       end_date: "",
+      errors: {},
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
