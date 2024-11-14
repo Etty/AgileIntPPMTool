@@ -8,6 +8,10 @@ export const createProject = (project, navigate) => async (dispatch) => {
     // const navigate = useNavigate();
     const res = await axios.post("http://localhost:8080/api/project", project);
     navigate("/dashboard");
+    dispatch({
+      type: GET_ERRORS,
+      payload: {},
+    });
   } catch (err) {
     // validation errors from server, which will be displayed on form
     dispatch({
