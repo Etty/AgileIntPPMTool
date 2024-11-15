@@ -1,5 +1,6 @@
 package io.agileintelligence.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -19,9 +20,14 @@ public class ProjectTask {
     private Integer priority;
     private Date dueDate;
 
-//    ManyToOne with Backlog
     @Column(updatable = false)
     private String projectIdentifier;
+    //    ManyToOne with Backlog
+//    CascadeType.REFRESH - when task get deleted, the backlog gets updated
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
 
     private Date create_At;
     private Date update_At;
@@ -118,6 +124,14 @@ public class ProjectTask {
 
     public void setUpdate_At(Date update_At) {
         this.update_At = update_At;
+    }
+
+    public Backlog getBacklog() {
+        return backlog;
+    }
+
+    public void setBacklog(Backlog backlog) {
+        this.backlog = backlog;
     }
 
     @Override
