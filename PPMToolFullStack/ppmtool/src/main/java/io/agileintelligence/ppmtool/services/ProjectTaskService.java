@@ -7,6 +7,8 @@ import io.agileintelligence.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+
 @Service
 public class ProjectTaskService {
     @Autowired
@@ -39,5 +41,9 @@ public class ProjectTaskService {
         }
 
         return projectTaskSRepository.save(projectTask);
+    }
+
+    public Iterable<ProjectTask> findBacklogById(String backlogId) {
+        return projectTaskSRepository.findByProjectIdentifierOrderByPriority(backlogId);
     }
 }

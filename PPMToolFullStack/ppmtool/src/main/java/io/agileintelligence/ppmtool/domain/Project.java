@@ -1,6 +1,7 @@
 package io.agileintelligence.ppmtool.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -34,6 +35,7 @@ public class Project {
 
 //    delete a backlog when project gets deleted
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    @JsonIgnore //exclude from api response
     private Backlog backlog;
 
     public Project() {
