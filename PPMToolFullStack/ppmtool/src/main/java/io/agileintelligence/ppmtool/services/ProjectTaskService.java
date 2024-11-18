@@ -1,8 +1,11 @@
 package io.agileintelligence.ppmtool.services;
 
 import io.agileintelligence.ppmtool.domain.Backlog;
+import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.domain.ProjectTask;
+import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
 import io.agileintelligence.ppmtool.repositories.BacklogRepository;
+import io.agileintelligence.ppmtool.repositories.ProjectRepository;
 import io.agileintelligence.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,17 @@ public class ProjectTaskService {
     @Autowired
     private ProjectTaskRepository projectTaskSRepository;
 
+    @Autowired
+    private ProjectRepository projectRepository;
+
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
 //        task must be assigned to some project
         Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+
+        if (backlog == null) {
+            throw new ProjectIdException("Project ID '" + projectIdentifier + "' not found");
+        }
+
         projectTask.setBacklog(backlog);
 
         Integer BacklogSequence = backlog.getPTSequence();
@@ -44,6 +55,10 @@ public class ProjectTaskService {
     }
 
     public Iterable<ProjectTask> findBacklogById(String backlogId) {
+        Project project = projectRepository.findByProjectIdentifier(backlogId);
+        if (project == null) {
+            throw new ProjectIdException("Project with ID:'" + backlogId + "' does not exist");
+        }
         return projectTaskSRepository.findByProjectIdentifierOrderByPriority(backlogId);
     }
 }
