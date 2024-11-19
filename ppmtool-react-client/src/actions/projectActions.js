@@ -6,7 +6,7 @@ import { GET_ERRORS, GET_PROJECT, GET_PROJECTS, DELETE_PROJECT } from "./types";
 export const createProject = (project, navigate) => async (dispatch) => {
   try {
     // const navigate = useNavigate();
-    const res = await axios.post("/api/project", project);
+    await axios.post("/api/project", project);
     navigate("/dashboard");
     dispatch({
       type: GET_ERRORS,
