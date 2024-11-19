@@ -19,7 +19,8 @@ public class Backlog {
     private Project project;
 
 //    OneToMany project to tasks
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
+//    orphanRemoval = true - get rid of a child if it no longer belongs to parent
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog", orphanRemoval = true)
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
     private Integer PTSequence = 0;

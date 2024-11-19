@@ -24,7 +24,7 @@ public class ProjectTask {
     private String projectIdentifier;
     //    ManyToOne with Backlog
 //    CascadeType.REFRESH - when task get deleted, the backlog gets updated
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;
