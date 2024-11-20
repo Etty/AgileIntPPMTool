@@ -29,17 +29,19 @@ class AddProjectTask extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const { id } = this.props.router.params;
     const newTask = {
       summary: this.state.summary,
       acceptanceCriteria: this.state.acceptanceCriteria,
       status: this.state.status,
       priority: this.state.priority,
       dueDate: this.state.dueDate,
-      projectIdentifier: id,
     };
 
-    this.props.addProjectTask(id, newTask, this.props.router.navigate);
+    this.props.addProjectTask(
+      this.state.projectIdentifier,
+      newTask,
+      this.props.router.navigate
+    );
   }
 
   render() {
