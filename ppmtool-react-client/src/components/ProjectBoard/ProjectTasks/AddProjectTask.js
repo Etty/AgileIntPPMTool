@@ -1,8 +1,47 @@
 import React, { Component } from "react";
 import withRouter from "../../withRouter";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import classNames from "classnames";
+import { addProjectTask } from "../../../actions/backlogActions";
+import PropTypes from "prop-types";
 
 class AddProjectTask extends Component {
+  constructor(props) {
+    super(props);
+    const { id } = this.props.router.params;
+    this.state = {
+      summary: "",
+      acceptanceCriteria: "",
+      status: "",
+      priority: 0,
+      dueDate: "",
+      projectIdentifier: id,
+      errors: {},
+    };
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const { id } = this.props.router.params;
+    const newTask = {
+      summary: this.state.summary,
+      acceptanceCriteria: this.state.acceptanceCriteria,
+      status: this.state.status,
+      priority: this.state.priority,
+      dueDate: this.state.dueDate,
+      projectIdentifier: id,
+    };
+
+    this.props.addProjectTask(id, newTask, this.props.router.navigate);
+  }
+
   render() {
     const { id } = this.props.router.params;
     return (
@@ -19,16 +58,27 @@ class AddProjectTask extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classNames("form-control form-control-lg", {
+                      "is-invalid": this.props.errors.summary,
+                    })}
                     name="summary"
                     placeholder="Project Task summary"
+                    value={this.state.summary}
+                    onChange={this.onChange}
                   />
+                  {this.props.errors.summary && (
+                    <div className="invalid-feedback">
+                      {this.props.errors.summary}
+                    </div>
+                  )}
                 </div>
                 <div className="form-group">
                   <textarea
                     className="form-control form-control-lg"
                     placeholder="Acceptance Criteria"
                     name="acceptanceCriteria"
+                    value={this.state.acceptanceCriteria}
+                    onChange={this.onChange}
                   ></textarea>
                 </div>
                 <h6>Due Date</h6>
@@ -37,12 +87,16 @@ class AddProjectTask extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="dueDate"
+                    value={this.state.dueDate}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
                   <select
                     className="form-control form-control-lg"
                     name="priority"
+                    value={this.state.priority}
+                    onChange={this.onChange}
                   >
                     <option value={0}>Select Priority</option>
                     <option value={1}>High</option>
@@ -55,6 +109,8 @@ class AddProjectTask extends Component {
                   <select
                     className="form-control form-control-lg"
                     name="status"
+                    value={this.state.status}
+                    onChange={this.onChange}
                   >
                     <option value="">Select Status</option>
                     <option value="TO_DO">TO DO</option>
@@ -76,4 +132,15 @@ class AddProjectTask extends Component {
   }
 }
 
-export default withRouter(AddProjectTask);
+AddProjectTask.propTypes = {
+  addProjectTask: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { addProjectTask })(
+  withRouter(AddProjectTask)
+);

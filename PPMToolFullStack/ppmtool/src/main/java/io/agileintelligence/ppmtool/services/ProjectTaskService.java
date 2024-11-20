@@ -45,7 +45,7 @@ public class ProjectTaskService {
         projectTask.setProjectIdentifier(projectIdentifier);
 
 //        setting priority to low when it's not specified
-        if (projectTask.getPriority() == null) { //in the future we need projectTask.getPriority() == null to handle the form
+        if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) { //in the future we need projectTask.getPriority() == null to handle the form
             projectTask.setPriority(3);
         }
 
