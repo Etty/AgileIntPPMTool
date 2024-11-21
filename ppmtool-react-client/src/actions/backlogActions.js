@@ -1,6 +1,5 @@
 import axios from "axios";
 import { GET_ERRORS, GET_BACKLOG } from "./types";
-import { type } from "@testing-library/user-event/dist/type";
 
 export const addProjectTask =
   (backlog_id, project_task, navigate) => async (dispatch) => {
