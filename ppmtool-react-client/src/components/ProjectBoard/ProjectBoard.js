@@ -2,8 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "../withRouter";
 import Backlog from "./Backlog";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getBacklog } from "../../actions/backlogActions";
 
 class ProjectBoard extends Component {
+  componentDidMount() {
+    const { id } = this.props.router.params;
+    this.props.getBacklog(id);
+  }
   render() {
     const { id } = this.props.router.params;
     return (
@@ -19,4 +26,15 @@ class ProjectBoard extends Component {
   }
 }
 
-export default withRouter(ProjectBoard);
+ProjectBoard.propTypes = {
+  backlog: PropTypes.object.isRequired,
+  getBacklog: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  backlog: state.backlog,
+});
+
+export default connect(mapStateToProps, { getBacklog })(
+  withRouter(ProjectBoard)
+);
