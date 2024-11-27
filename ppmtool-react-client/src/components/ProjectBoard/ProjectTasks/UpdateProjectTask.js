@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classNames from "classnames";
-import { getProjectTask } from "../../../actions/backlogActions";
+import {
+  getProjectTask,
+  updateProjectTask,
+} from "../../../actions/backlogActions";
 import PropTypes from "prop-types";
 import withRouter from "../../withRouter";
+import { Link } from "react-router-dom";
 
 class UpdateProjectTask extends Component {
   constructor() {
@@ -19,6 +23,7 @@ class UpdateProjectTask extends Component {
       dueDate: "",
       projectIdentifier: "",
       create_At: "",
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -72,7 +77,13 @@ class UpdateProjectTask extends Component {
       projectIdentifier: this.state.projectIdentifier,
       create_At: this.state.create_At,
     };
-    console.log(updateProjectTask);
+    // console.log(updateProjectTask);
+    this.props.updateProjectTask(
+      this.state.projectIdentifier,
+      this.state.projectSequence,
+      updateProjectTask,
+      this.props.router.navigate
+    );
     // this.props.createProject(updateroject, this.props.router.navigate);
   }
 
@@ -82,9 +93,12 @@ class UpdateProjectTask extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <a href="#" className="btn btn-light">
+              <Link
+                to={`/projectBoard/${this.state.projectIdentifier}`}
+                className="btn btn-light"
+              >
                 Back to Project Board
-              </a>
+              </Link>
               <h4 className="display-4 text-center">Update Project Task</h4>
               <p className="lead text-center">
                 Project Name: {this.state.projectIdentifier} | Project Task ID:{" "}
@@ -94,12 +108,19 @@ class UpdateProjectTask extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classNames("form-control form-control-lg", {
+                      "is-invalid": this.props.errors.summary,
+                    })}
                     name="summary"
                     placeholder="Project Task summary"
                     value={this.state.summary}
                     onChange={this.onChange}
                   />
+                  {this.props.errors.summary && (
+                    <div className="invalid-feedback">
+                      {this.props.errors.summary}
+                    </div>
+                  )}
                 </div>
                 <div className="form-group">
                   <textarea
@@ -164,12 +185,15 @@ class UpdateProjectTask extends Component {
 UpdateProjectTask.propTypes = {
   getProjectTask: PropTypes.func.isRequired,
   project_task: PropTypes.object.isRequired,
+  updateProjectTask: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   project_task: state.backlog.project_task,
+  errors: state.errors,
 });
 
-export default connect(mapStateToProps, { getProjectTask })(
+export default connect(mapStateToProps, { getProjectTask, updateProjectTask })(
   withRouter(UpdateProjectTask)
 );
