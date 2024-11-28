@@ -1,13 +1,18 @@
 package io.agileintelligence.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -83,22 +88,56 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
-    public Date getCreated_At() {
-        return created_At;
+    public Date getCreate_At() {
+        return create_At;
     }
 
-    public void setCreated_At(Date created_At) {
-        this.created_At = created_At;
+    public void setCreate_At(Date created_At) {
+        this.create_At = created_At;
     }
 
-    public Date getUpdated_At() {
-        return updated_At;
+    public Date getUpdate_At() {
+        return update_At;
     }
 
-    public void setUpdated_At(Date updated_At) {
-        this.updated_At = updated_At;
+    public void setUpdate_At(Date updated_At) {
+        this.update_At = updated_At;
     }
 
     public User() {
+    }
+
+    /*
+     * UserDetails interface methods
+     */
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }

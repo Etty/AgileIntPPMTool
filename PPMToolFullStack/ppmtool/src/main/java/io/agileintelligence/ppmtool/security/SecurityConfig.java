@@ -39,7 +39,8 @@ public class SecurityConfig {
                         "/**/*.jpg",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.js",
+                        "/api/users/**"
                 ).permitAll()
                 .anyRequest().authenticated();
         return http.build();
