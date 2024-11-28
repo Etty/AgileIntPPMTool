@@ -21,6 +21,8 @@ public class UserService {
             newUser.setUsername(newUser.getUsername());;
 //            username has to be unique
 //            make sure that pass and confirmpass match
+//            can't user @JsonIgnore for this field, because it's excluded not in the end only
+            newUser.setConfirmPassword("");
             return userRepository.save(newUser);
         } catch (Exception e) {
             throw new UsernameAlreadyExistsException("Username " + newUser.getUsername() + " already exists");
