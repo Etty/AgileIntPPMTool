@@ -1,11 +1,8 @@
 package io.agileintelligence.ppmtool.security;
 
 import io.agileintelligence.ppmtool.domain.User;
-import io.agileintelligence.ppmtool.services.CustomUserDetailsService;
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,9 +12,6 @@ import static io.agileintelligence.ppmtool.security.SecurityConstants.SECRET;
 
 @Component
 public class JwtTokenProvider {
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
