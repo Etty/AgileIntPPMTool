@@ -1,6 +1,5 @@
 package io.agileintelligence.ppmtool.security;
 
-import ch.qos.logback.core.util.StringUtil;
 import io.agileintelligence.ppmtool.domain.User;
 import io.agileintelligence.ppmtool.services.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
@@ -35,8 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJWTFromRequest(request);
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromJWT(jwt);
-                User userDetails = customUserDetailsService.loadUserById(userId);
+//                Long userId = tokenProvider.getUserIdFromJWT(jwt);
+//                User userDetails = customUserDetailsService.loadUserById(userId);
+                User userDetails = tokenProvider.getUserFromJWT(jwt);
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, Collections.emptyList()

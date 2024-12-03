@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Password field is required")
     private String password;
 
-//    Transient - do not save to db
+    //    Transient - do not save to db
     @Transient
     private String confirmPassword;
 
@@ -36,7 +37,9 @@ public class User implements UserDetails {
 
     private Date update_At;
 
-//    OneToMany with Project
+    //    OneToMany with Project
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
@@ -139,5 +142,13 @@ public class User implements UserDetails {
     @JsonIgnore
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

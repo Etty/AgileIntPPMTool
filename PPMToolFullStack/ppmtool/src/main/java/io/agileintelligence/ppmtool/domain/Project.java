@@ -38,6 +38,12 @@ public class Project {
     @JsonIgnore //exclude from api response
     private Backlog backlog;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private User user;
+
+    private String projectLeader;
+
     public Project() {
 
     }
@@ -112,6 +118,22 @@ public class Project {
 
     public Date getUpdate_At() {
         return update_At;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getProjectLeader() {
+        return projectLeader;
+    }
+
+    public void setProjectLeader(String projectLeader) {
+        this.projectLeader = projectLeader;
     }
 
     @PrePersist
