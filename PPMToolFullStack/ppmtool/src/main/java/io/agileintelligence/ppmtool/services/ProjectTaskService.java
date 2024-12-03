@@ -25,9 +25,12 @@ public class ProjectTaskService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
+    @Autowired
+    private ProjectService projectService;
+
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username) {
 //        task must be assigned to some project
-        Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+        Backlog backlog = projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog(); //backlogRepository.findByProjectIdentifier(projectIdentifier);
 
         if (backlog == null) {
             throw new ProjectIdException("Project ID '" + projectIdentifier + "' not found");
@@ -45,7 +48,7 @@ public class ProjectTaskService {
         projectTask.setProjectIdentifier(projectIdentifier);
 
 //        setting priority to low when it's not specified
-        if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) { //in the future we need projectTask.getPriority() == null to handle the form
+        if (projectTask.getPriority() == null || projectTask.getPriority() == 0) { //in the future we need projectTask.getPriority() == null to handle the form
             projectTask.setPriority(3);
         }
 
@@ -56,11 +59,8 @@ public class ProjectTaskService {
         return projectTaskSRepository.save(projectTask);
     }
 
-    public Iterable<ProjectTask> findBacklogById(String backlogId) {
-        Project project = projectRepository.findByProjectIdentifier(backlogId);
-        if (project == null) {
-            throw new ProjectIdException("Project with ID:'" + backlogId + "' does not exist");
-        }
+    public Iterable<ProjectTask> findBacklogById(String backlogId, String username) {
+        projectService.findProjectByIdentifier(backlogId, username);
         return projectTaskSRepository.findByProjectIdentifierOrderByPriority(backlogId);
     }
 
