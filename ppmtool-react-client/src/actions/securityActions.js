@@ -3,7 +3,7 @@ import { GET_ERRORS } from "./types";
 
 export const createNewUser = (newUser, navigate) => async (dispatch) => {
   try {
-    axios.post("/api/users/register", newUser);
+    await axios.post("/api/users/register", newUser);
     navigate("/login");
     dispatch({
       type: GET_ERRORS,
