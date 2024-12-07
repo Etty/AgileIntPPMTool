@@ -14,6 +14,25 @@ import UpdateProjectTask from "./components/ProjectBoard/ProjectTasks/UpdateProj
 import Landing from "./components/Layout/Landing";
 import Register from "./components/UserManagement/Register";
 import Login from "./components/UserManagement/Login";
+import { jwtDecode } from "jwt-decode";
+import setJWTToken from "./securityUtils/setJWTToken";
+import { SET_CURRENT_USER } from "./actions/types";
+
+// token disappears with page refresh, so we re-set it into app.js
+const jwtToken = localStorage.jwtToken;
+if (jwtToken) {
+  setJWTToken(jwtToken);
+  const decoded_jwttoken = jwtDecode(jwtToken);
+  store.dispatch({
+    type: SET_CURRENT_USER,
+    payload: decoded_jwttoken,
+  });
+
+  const currentTime = Date.now() / 1000;
+  if (decoded_jwttoken.exp < currentTime) {
+    window.location.href = "/";
+  }
+}
 
 function App() {
   return (

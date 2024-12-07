@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classNames from "classnames";
 import { login } from "../../actions/securityActions";
+import withNavigate from "../withNavigate";
 
 class Login extends Component {
   constructor() {
@@ -14,6 +15,18 @@ class Login extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  // if (nextProps.security.validToken) {
+  //   this.props.navigate("/dashboard");
+  // }
+  // }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.security.validToken) {
+      this.props.navigate("/dashboard");
+    }
   }
 
   onChange(e) {
@@ -75,4 +88,4 @@ const mapStateToProps = (state) => ({
   security: state.security,
   errors: state.errors,
 });
-export default connect(null, { login })(Login);
+export default connect(mapStateToProps, { login })(withNavigate(Login));
