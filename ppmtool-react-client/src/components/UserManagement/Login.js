@@ -24,9 +24,17 @@ class Login extends Component {
   // }
   // }
 
+  componentDidMount() {
+    if (this.props.security.validToken) {
+      this.props.navigate("/dashboard");
+      window.location.href = "/dashboard";
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.security.validToken) {
       this.props.navigate("/dashboard");
+      window.location.href = "/dashboard";
     }
   }
 
