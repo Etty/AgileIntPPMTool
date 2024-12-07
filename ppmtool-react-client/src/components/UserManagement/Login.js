@@ -11,6 +11,7 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -42,6 +43,7 @@ class Login extends Component {
     this.props.login(LoginRequest);
   }
   render() {
+    const { errors } = this.state;
     return (
       <div className="login">
         <div className="container">
@@ -52,22 +54,36 @@ class Login extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classNames("form-control form-control-lg", {
+                      "is-invalid": this.props.errors.username,
+                    })}
                     placeholder="Email Address"
                     name="username"
                     value={this.state.username}
                     onChange={this.onChange}
                   />
+                  {this.props.errors.username && (
+                    <div className="invalid-feedback">
+                      {this.props.errors.username}
+                    </div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
                     type="password"
-                    className="form-control form-control-lg"
+                    className={classNames("form-control form-control-lg", {
+                      "is-invalid": this.props.errors.password,
+                    })}
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
                     onChange={this.onChange}
                   />
+                  {this.props.errors.password && (
+                    <div className="invalid-feedback">
+                      {this.props.errors.password}
+                    </div>
+                  )}
                 </div>
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
@@ -82,6 +98,7 @@ class Login extends Component {
 login.propTypes = {
   login: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
+  security: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

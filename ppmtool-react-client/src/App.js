@@ -17,6 +17,7 @@ import Login from "./components/UserManagement/Login";
 import { jwtDecode } from "jwt-decode";
 import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
+import { logout } from "./actions/securityActions";
 
 // token disappears with page refresh, so we re-set it into app.js
 const jwtToken = localStorage.jwtToken;
@@ -30,6 +31,7 @@ if (jwtToken) {
 
   const currentTime = Date.now() / 1000;
   if (decoded_jwttoken.exp < currentTime) {
+    store.dispatch(logout());
     window.location.href = "/";
   }
 }
