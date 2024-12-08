@@ -18,6 +18,7 @@ import { jwtDecode } from "jwt-decode";
 import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
 import { logout } from "./actions/securityActions";
+import SecuredRoute from "./securityUtils/SecureRoute";
 
 // token disappears with page refresh, so we re-set it into app.js
 const jwtToken = localStorage.jwtToken;
@@ -48,19 +49,61 @@ function App() {
             <Route exact path="/register" Component={Register} />
             <Route exact path="/login" Component={Login} />
             {/* Private routes */}
-            <Route exact path="/dashboard" Component={Dashboard} />
-            <Route exact path="/addProject" Component={AddProject} />
-            <Route exact path="/updateProject/:id" Component={UpdateProject} />
-            <Route exact path="/projectBoard/:id" Component={ProjectBoard} />
+
+            <Route
+              exact
+              path="/dashboard"
+              element={
+                <SecuredRoute>
+                  <Dashboard />
+                </SecuredRoute>
+              }
+            />
+            <Route
+              exact
+              path="/addProject"
+              element={
+                <SecuredRoute>
+                  <AddProject />
+                </SecuredRoute>
+              }
+            />
+            <Route
+              exact
+              path="/updateProject/:id"
+              element={
+                <SecuredRoute>
+                  <UpdateProject />
+                </SecuredRoute>
+              }
+            />
+            <Route
+              exact
+              path="/projectBoard/:id"
+              element={
+                <SecuredRoute>
+                  <ProjectBoard />
+                </SecuredRoute>
+              }
+            />
             <Route
               exact
               path="/addProjectTask/:id"
-              Component={AddProjectTask}
+              element={
+                <SecuredRoute>
+                  <AddProjectTask />
+                </SecuredRoute>
+              }
             />
             <Route
               exact
               path="/updateProjectTask/:backlog_id/:pt_id"
               Component={UpdateProjectTask}
+              element={
+                <SecuredRoute>
+                  <UpdateProjectTask />
+                </SecuredRoute>
+              }
             />
           </Routes>
         </div>
