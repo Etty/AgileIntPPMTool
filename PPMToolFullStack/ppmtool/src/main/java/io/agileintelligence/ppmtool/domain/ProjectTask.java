@@ -1,5 +1,6 @@
 package io.agileintelligence.ppmtool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ public class ProjectTask {
     private String acceptanceCriteria;
     private String status;
     private Integer priority;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date dueDate;
 
     @Column(updatable = false)
@@ -29,7 +31,10 @@ public class ProjectTask {
     @JsonIgnore
     private Backlog backlog;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date create_At;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date update_At;
 
     @PrePersist
