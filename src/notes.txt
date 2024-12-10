@@ -1,0 +1,1 @@
+InMemory DB - data is erased every time server is restarted
